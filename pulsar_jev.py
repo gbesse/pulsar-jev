@@ -16,7 +16,8 @@ class JevDecisionFunction(Function):
             if not question:
                 raise ValueError('question user config is required')
             threshold = float(context.get_user_config_value('threshold') or 0.8)
-            self.client = JevClient(question, threshold=threshold)
+            max_calls = int(context.get_user_config_value('max_calls') or 10000)
+            self.client = JevClient(question, threshold=threshold, max_calls=max_calls)
         field = context.get_user_config_value('text_field') or 'text'
         event = json.loads(input.decode('utf-8') if isinstance(input, bytes) else input)
         if not isinstance(event, dict) or not isinstance(event.get(field), str):
